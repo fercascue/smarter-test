@@ -40,6 +40,7 @@ jobs:
          DISABLE_ERRORS: true
   
   build-feature:
+    name: build project
     needs: lint-codebase
     runs-on: ubuntu-latest
     defaults:

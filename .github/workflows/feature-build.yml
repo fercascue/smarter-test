@@ -7,7 +7,8 @@ on:
       - 'lambda1/**'
       - 'lambda2/**'
 jobs:
-  activate-workflow:  
+  activate-workflow: 
+    name: Detect changes
     runs-on: ubuntu-latest
     # Required permissions
     permissions:
@@ -29,6 +30,7 @@ jobs:
            lambda2:
              - 'lambda2/**'
   build-feature:
+    name: Build feature
     needs: activate-workflow
     if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     strategy:
