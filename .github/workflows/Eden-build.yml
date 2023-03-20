@@ -30,21 +30,16 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
-  
   security-scan:
-    needs: activate-workflow 
+    needs: activate-workflow
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     strategy:
       matrix:
-        # Parse JSON array containing names of all filters matching any of changed files
-        # e.g. ['package1', 'package2'] if both package folders contains changes
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
-    runs-on: ubuntu-latest
-    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     uses: ./.github/workflows/security-scan.yml
     with:
-      stage: ${{ github.head_ref }}
-      resource: ${{ (matrix.projects) }}     
- 
+      stage: ${{ github.ref_name }}
+      resource: ${{ (matrix.projects) }}  
 
   
  
