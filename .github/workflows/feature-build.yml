@@ -1,0 +1,85 @@
+name: Feature Continuous Integration
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'lambda1/**'
+      - 'lambda2/**'
+jobs:
+  activate-workflow:  
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    outputs:
+      # Expose matched filters as job 'projects' output variable
+      projects: ${{ steps.filter.outputs.changes }}
+    steps:
+     - uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+     - uses: dorny/paths-filter@v2
+       id: filter
+       with:
+         list-files: json
+         filters: |
+           lambda1:
+             - 'lambda1/**'
+           lambda2:
+             - 'lambda2/**'
+  lint-codebase:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+    needs: activate-workflow
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+    strategy:
+      matrix:
+        projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ matrix.projects }} 
+    steps:
+     - name: Checkout Code
+       uses: actions/checkout@v3
+       with:
+         fetch-depth: 0
+
+     - uses: github/super-linter/slim@v4
+       env:
+         VALIDATE_ALL_CODEBASE: false
+         DEFAULT_BRANCH: ${{ github.head_ref }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         VALIDATE_JAVA: true
+         DISABLE_ERRORS: true
+  
+  build-feature:
+    needs: activate-workflow
+    runs-on: ubuntu-latest
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+    strategy:
+      matrix:
+        projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ matrix.projects }} 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout folder source code from ${{ github.head_ref }} for the event ${{ github.event_name }}
+        run: |
+          echo "Checkout folder ${{ matrix.projects }}"
+      - name: Setup jdk
+        uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc
+        with:
+          java-version: 11
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install ${{ inputs.maven-params }} --file pom.xml
+
+
+  
+ 
