@@ -21,6 +21,9 @@ jobs:
   test-suite:
     name: Test load 
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
     defaults:
       run:
         shell: bash
