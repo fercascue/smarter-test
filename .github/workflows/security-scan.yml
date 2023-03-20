@@ -19,6 +19,14 @@ on:
         type: string
         default: ''  
 
+permissions:
+  # required for all workflows
+  security-events: write
+
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
+
 jobs:
   check-vulnerabilities:
     name: Check vulnerabilities 
@@ -28,13 +36,6 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ inputs.resource }}
-    permissions:
-      # required for all workflows
-      security-events: write
-
-      # only required for workflows in private repositories
-      #actions: read
-      #contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
