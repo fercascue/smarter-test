@@ -2,8 +2,7 @@ name: Eden Deploy
 
 on:
   pull_request:
-    types: 
-      - closed
+     types: ['opened', 'edited', 'reopened', 'synchronize']
     branches:
       - main
     paths:
