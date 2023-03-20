@@ -1,0 +1,37 @@
+name: Eden Deploy
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+    paths:
+      - 'lambda1/**'
+      - 'lambda2/**'
+jobs:
+  activate-workflow:  
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+     - uses: dorny/paths-filter@v2
+       id: filter
+       with:
+         list-files: json
+         filters: |
+           lambda1:
+             - 'lambda1/**'
+           lambda2:
+             - 'lambda2/**'
+  detecting-changes:
+    name: REF NAME VALUE - ${{ github.ref_name }}
+    needs: activate-workflow 
+    runs-on: ubuntu-latest
+    steps: 
+      - run: echo ${{ needs.changes.outputs.names }}    
+
+  
+ 
+
