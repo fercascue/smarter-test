@@ -24,6 +24,10 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
+     - name: Extract branch name
+       shell: bash
+       run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+       id: extract_branch           
   detecting-changes:
     name: REF NAME VALUE - ${{ github.ref_name }}
     needs: activate-workflow 
