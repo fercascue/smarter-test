@@ -38,6 +38,10 @@ jobs:
         # e.g. ['package1', 'package2'] if both package folders contains changes
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ (matrix.projects) }}
     steps:
       - uses: actions/checkout@v3
       - name: Checkout folder source code from ${{ github.head_name }} for the event ${{ github.event_name }}
