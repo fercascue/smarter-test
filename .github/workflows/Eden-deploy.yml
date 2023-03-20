@@ -27,7 +27,6 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
-
   build:
     needs: activate-workflow 
     strategy:
@@ -47,8 +46,8 @@ jobs:
           java-version: 11
           distribution: 'adopt'
           cache: maven
-     - name: Build with Maven
-       run: mvn clean install --file pom.xml  
+      - name: Build with Maven
+        run: mvn clean install --file pom.xml  
  
 
   
