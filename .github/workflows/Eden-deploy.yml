@@ -11,6 +11,8 @@ on:
 jobs:
   activate-workflow:  
     runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.extract_branch.outputs.branch }}
     steps:
      - uses: actions/checkout@v2
        with:
@@ -25,11 +27,12 @@ jobs:
            lambda2:
              - 'lambda2/**'
      - name: Extract branch name
+       id: extract_branch 
        shell: bash
        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
-       id: extract_branch           
+                 
   detecting-changes:
-    name: REF NAME VALUE - ${{ github.ref_name }}
+    name: REF NAME VALUE - ${{ needs.activate-workflow.outputs.branch_name }}
     needs: activate-workflow 
     runs-on: ubuntu-latest
     steps: 
