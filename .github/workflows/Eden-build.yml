@@ -30,32 +30,16 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
-  build:
-    needs: activate-workflow 
+  security-scan:
+    needs: activate-workflow
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     strategy:
       matrix:
-        # Parse JSON array containing names of all filters matching any of changed files
-        # e.g. ['package1', 'package2'] if both package folders contains changes
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ (matrix.projects) }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Checkout folder source code from ${{ github.head_name }} for the event ${{ github.event_name }}
-        run: |
-          echo "Checkout folder ${{ (matrix.projects) }} "
-      - name: Setup jdk
-        uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc
-        with:
-          java-version: 11
-          distribution: 'adopt'
-          cache: maven
-      - name: Build with Maven
-        run: mvn clean install --file pom.xml  
- 
+    uses: ./.github/workflows/security-scan.yml
+    with:
+      stage: ${{ github.ref_name }}
+      resource: ${{ (matrix.projects) }}  
 
   
  

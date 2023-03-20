@@ -1,0 +1,56 @@
+name: Security Scan
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+      resource:  
+        required: false
+        type: string
+      java-version:
+        required: false
+        type: string
+        default: '11'
+      # allowing calling workflows to pass in maven parameter(s) such as '-Dmaven.test.skip' for certain apps, default to blank, not to skip test
+      maven-params:
+        required: false
+        type: string
+        default: ''  
+
+jobs:
+  check-vulnerabilities:
+    name: Check vulnerabilities 
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.resource }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        # Override language selection by uncommenting this and choosing your languages
+        with:
+           languages: java
+
+      # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below).
+      - name: Setup jdk
+        uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc
+        with:
+          java-version: ${{ inputs.java-version }}
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install ${{ inputs.maven-params }} --file pom.xml   
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2   
+   
+  
