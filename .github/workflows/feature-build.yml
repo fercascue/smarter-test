@@ -2,7 +2,7 @@ name: Feature Continuous Integration
 on:
   push:
     branches:
-      - 'feature*'
+      - develop
     paths:
       - 'lambda1/**'
       - 'lambda2/**'
