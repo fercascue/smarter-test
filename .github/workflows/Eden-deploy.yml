@@ -11,6 +11,9 @@ on:
 jobs:
   activate-workflow:  
     runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
     outputs:
       # Expose matched filters as job 'projects' output variable
       projects: ${{ steps.filter.outputs.changes }}
