@@ -22,7 +22,6 @@ on:
 jobs:
   check-vulnerabilities:
     name: Check vulnerabilities 
-    needs: test-load
     runs-on: ubuntu-latest
     defaults:
       run:
