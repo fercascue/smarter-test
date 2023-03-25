@@ -1,8 +1,8 @@
-name: Eden build
+name: Eden Deploy
 
 on:
   pull_request:
-    types: ['opened', 'edited', 'reopened', 'synchronize']
+    types: ['closed']
     branches:
       - test-qua
     paths:
@@ -28,13 +28,13 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
-  security-scan:
+  deploy-to-eden:
     needs: activate-workflow
     if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     strategy:
       matrix:
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
-    uses: ./.github/workflows/security-scan.yml
+    uses: ./.github/workflows/deploy-workflow.yml
     with:
       stage: ${{ github.ref_name }}
       resource: ${{ (matrix.projects) }}  
