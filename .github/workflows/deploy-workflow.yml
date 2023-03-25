@@ -1,0 +1,46 @@
+name: Deploy Workflow
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+      resource:  
+        required: false
+        type: string
+      java-version:
+        required: false
+        type: string
+        default: '11'
+      # allowing calling workflows to pass in maven parameter(s) such as '-Dmaven.test.skip' for certain apps, default to blank, not to skip test
+      maven-params:
+        required: false
+        type: string
+        default: ''
+jobs:
+  build-feature:
+    name: build project
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.resource }} 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout folder source code from ${{ github.head_ref }} for the event ${{ github.event_name }}
+        run: |
+          echo "Checkout folder ${{ inputs.resource }}"
+      - name: Setup jdk
+        uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc
+        with:
+          java-version: ${{ inputs.java-version }}
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install ${{ inputs.maven-params }} --file pom.xml
+  deploy-eden:
+    name: Deploy Eden
+    runs-on: ubuntu-latest
+    steps:
+       - run: echo Deploy to Eden 
