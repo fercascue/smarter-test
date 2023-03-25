@@ -9,8 +9,25 @@ on:
       - 'lambda1/**'
       - 'lambda2/**'
 jobs:
+ 
+  lint-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v3
+     - name: Install Dependencies
+       run: npm install @commitlint/config-conventional
+     - uses: JulienKode/pull-request-name-linter-action@v0.5.0
+     - name: Create comment
+       uses: peter-evans/create-or-update-comment@v2
+       id: create-comment
+       with:
+         issue-number:  ${{ github.event.pull_request.number }}
+         body: |
+           Github [Bot] approves this comment
+         reactions: rocket
   activate-workflow:  
     runs-on: ubuntu-latest
+    needs: lint-pull-request
     # Required permissions
     permissions:
       pull-requests: read
@@ -37,11 +54,22 @@ jobs:
     uses: ./.github/workflows/security-scan.yml
     with:
       stage: ${{ github.ref_name }}
-      resource: ${{ (matrix.projects) }}  
+      resource: ${{ (matrix.projects) }}
+  auto-approve:
+    runs-on: ubuntu-latest
+    needs: security-scan
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: hmarr/auto-approve-action@v3
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          review-message: "Auto approved automated PR"
+      
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
     name: Complete Security Scan
-    needs: security-scan
+    needs: auto-approve
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
