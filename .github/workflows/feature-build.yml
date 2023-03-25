@@ -17,9 +17,7 @@ jobs:
       # Expose matched filters as job 'projects' output variable
       projects: ${{ steps.filter.outputs.changes }}
     steps:
-     - uses: actions/checkout@v2
-       with:
-         fetch-depth: 0
+     - uses: actions/checkout@v3
      - uses: dorny/paths-filter@v2
        id: filter
        with:
