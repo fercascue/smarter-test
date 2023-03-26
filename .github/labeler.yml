@@ -1,5 +1,5 @@
-customer-portal-front:
-  - '*'
+customer-portal-back:
+  - '**/*'
 
 ci/cd:
   - .github/workflows/*
