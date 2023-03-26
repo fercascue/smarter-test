@@ -2,7 +2,7 @@ name: Eden Deploy
 
 on:
   pull_request:
-    types: ['closed']
+    types: ['auto_merge_enabled']
     branches:
       - test-qua
     paths:
