@@ -9,7 +9,8 @@ on:
       - 'lambda1/**'
       - 'lambda2/**'
 jobs:
-  activate-workflow:  
+  activate-workflow:
+    if: github.event.pull_request.merged == true  
     runs-on: ubuntu-latest
     # Required permissions
     permissions:
