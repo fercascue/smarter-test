@@ -27,6 +27,21 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
+  merge_job:
+    runs-on: ubuntu-latest
+    env: 
+      CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      CI_COMMIT_AUTHOR: Continuous Integration
+    steps:
+      - uses: actions/checkout@v3
+      - name: GIT Commit 
+        # Only run on main branch push (e.g. pull request merge).
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "username@users.noreply.github.com"
+          git checkout test-qua
+          git merge develop --no-edit -m "${{ env.CI_COMMIT_MESSAGE }}" 
   build-feature:
     name: Build feature
     needs: activate-workflow
@@ -39,6 +54,8 @@ jobs:
       stage: ${{ github.ref_name }}
       resource: ${{ (matrix.projects) }}  
   
+    
+
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
     name: Complete CI
