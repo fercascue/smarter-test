@@ -1,20 +1,24 @@
 name: Close PR
 on:
-  pull_request:
-    types: [ closed ]
+  push:
+    branches:
+    - test-qa
 
 jobs:
   merge_job:
-    # this job will only run if the PR has been merged
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env: 
+      CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      CI_COMMIT_AUTHOR: Continuous Integration
     steps:
-    - run: |
-        echo PR #${{ github.event.number }} has been merged
-  close_job:
-    # this job will only run if the PR has been closed without being merged
-    if: github.event.pull_request.merged == false
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo PR #${{ github.event.number }} has been closed without being merged
+      - uses: actions/checkout@v3
+      - name: GIT Commit 
+        # Only run on main branch push (e.g. pull request merge).
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "username@users.noreply.github.com"
+          git checkout test-qua
+          git merge develop --no-edit -m "${{ env.CI_COMMIT_MESSAGE }}"
+          
+  
