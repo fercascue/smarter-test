@@ -2,7 +2,7 @@ name: Close PR
 on:
   push:
     branches:
-    - test-qa
+    - test-qua
 
 jobs:
   merge_job:
