@@ -47,7 +47,12 @@ jobs:
         if: always()
         with:
           junit_files: "**/TEST-*.xml"
-
+      
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
   lint-codebase:
     name: Lint Code Base
     runs-on: ubuntu-latest
