@@ -42,7 +42,7 @@ jobs:
      - name: Publish to GitHub Packages Apache Maven
        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
        #if: ${{ inputs.resource == 'lambda1' }}
-       if: contains(fromJSON('["lambda1", "lambda3"]'), ${{ inputs.resource}})
+       if: contains(fromJSON('["lambda1", "lambda3"]'), inputs.resource)
        continue-on-error: true
        env:
           GITHUB_TOKEN: ${{ github.token }}
