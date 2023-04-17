@@ -50,7 +50,7 @@ jobs:
        run: mvn -B package --settings ../.github/config/settings.xml --file pom.xml
        env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
 
  
     
