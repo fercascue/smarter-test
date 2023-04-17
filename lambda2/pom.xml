@@ -6,12 +6,20 @@
 	<artifactId>lambda2</artifactId>
 	<version>0.0.11-SNAPSHOT</version>
 
+<servers>
+    <server>
+        <id>github</id>
+        <username>${{ secrets.GITHUB_ACTOR }}</username>
+        <password>${{ secrets.GITHUB_TOKEN }}</password>
+    </server>
+</servers>
+
 	<repositories>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/fercascue/smarter-test</url>
-    </repository>
-  </repositories>
+		<repository>
+		<id>github</id>
+		<url>https://maven.pkg.github.com/fercascue/smarter-test</url>
+		</repository>
+  	</repositories>
 
 	<dependencies>
 		<!-- junit 5, unit test -->
