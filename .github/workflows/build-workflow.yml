@@ -56,7 +56,8 @@ jobs:
     
 
   test-suite:
-    name: Test load 
+    name: Test load
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       checks: write
