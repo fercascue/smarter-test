@@ -39,14 +39,6 @@ jobs:
          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-     - name: Publish to GitHub Packages Apache Maven
-       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-       #if: ${{ inputs.resource == 'lambda1' }}
-       if: contains(fromJSON('["lambda1", "lambda3"]'), inputs.resource)
-       continue-on-error: true
-       env:
-          GITHUB_TOKEN: ${{ github.token }}
-
      - name: Build with Maven
        run: mvn -B package --settings $GITHUB_WORKSPACE/settings.xml --file pom.xml
        env:

@@ -6,15 +6,6 @@
 	<artifactId>lambda2</artifactId>
 	<version>0.0.11-SNAPSHOT</version>
 
-
-
-	<repositories>
-		<repository>
-		<id>github</id>
-		<url>https://maven.pkg.github.com/fercascue/smarter-test</url>
-		</repository>
-  	</repositories>
-
 	<dependencies>
 		<!-- junit 5, unit test -->
 		<dependency>
@@ -23,11 +14,7 @@
 			<version>5.3.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.totalenergies</groupId>
-			<artifactId>lambda1</artifactId>
-			<version>0.0.2</version>
-		</dependency>
+	
 	</dependencies>
 
 	<build>
@@ -101,12 +88,5 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-   	<distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/fercascue/smarter-test</url>
-    </repository>
-  </distributionManagement>
 
 </project>
