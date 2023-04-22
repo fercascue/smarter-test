@@ -101,16 +101,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
   
-  deploy-to-eden:
-    needs: [activate-workflow, auto-merge]
-    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
-    strategy:
-      matrix:
-        projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
-    uses: ./.github/workflows/deploy-workflow.yml
-    with:
-      stage: ${{ github.ref_name }}
-      resource: ${{ (matrix.projects) }} 
+  #deploy-to-eden:
+  #  needs: [activate-workflow, auto-merge]
+  #  if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+  #  strategy:
+  #    matrix:
+  #      projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
+  #  uses: ./.github/workflows/deploy-workflow.yml
+  #  with:
+  #    stage: ${{ github.ref_name }}
+  #    resource: ${{ (matrix.projects) }} 
   
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
