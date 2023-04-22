@@ -1,18 +1,12 @@
 name: Eden Deploy
 
 on:
-  pull_request:
-    branches: 
-      - test-qua
-    types: [closed]
+  workflow_dispatch:
 
 jobs:
   activate-workflow:
     runs-on: ubuntu-latest
     # Required permissions
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    permissions:
-      pull-requests: read
     outputs:
       # Expose matched filters as job 'projects' output variable
       projects: ${{ steps.filter.outputs.changes }}
