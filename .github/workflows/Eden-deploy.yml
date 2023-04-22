@@ -1,16 +1,16 @@
 name: Eden Deploy
 
 on:
-  push:
-    branches:
+  pull_request:
+    branches: 
       - test-qua
-    paths:
-      - 'lambda1/**'
-      - 'lambda2/**'
+    types: [closed]
+
 jobs:
   activate-workflow:
     runs-on: ubuntu-latest
     # Required permissions
+    if: github.event.pull_request.merged == true
     permissions:
       pull-requests: read
     outputs:
