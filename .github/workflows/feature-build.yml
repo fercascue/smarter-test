@@ -18,9 +18,14 @@ jobs:
       projects: ${{ steps.filter.outputs.changes }}
     steps:
      - uses: actions/checkout@v3
+       with:
+        # This may save additional git fetch roundtrip if
+        # merge-base is found within latest 20 commits
+        fetch-depth: 20
      - uses: dorny/paths-filter@v2
        id: filter
        with:
+         base: test-qua
          list-files: json
          filters: |
            lambda1:
@@ -38,8 +43,6 @@ jobs:
     with:
       stage: ${{ github.ref_name }}
       resource: ${{ (matrix.projects) }}  
-  
-    
 
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7

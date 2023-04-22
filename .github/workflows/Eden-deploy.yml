@@ -10,7 +10,7 @@ jobs:
   activate-workflow:
     runs-on: ubuntu-latest
     # Required permissions
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
     permissions:
       pull-requests: read
     outputs:
