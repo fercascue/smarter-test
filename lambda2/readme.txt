@@ -5,5 +5,5 @@ mm vv cc transfer25 ff cc dd ff vv cc cc cc xx bb bb vv vv ss dd ff ff ff bb cc 
 
 
 
- f g g g g g f g h b t f nuevo nuevo 2
+ f g g g g g f g h b t f nuevo
 
