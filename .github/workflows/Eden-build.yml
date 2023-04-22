@@ -115,7 +115,7 @@ jobs:
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
     name: Complete Security Scan
-    needs: [lint-pull-request, activate-workflow, security-scan, triage, auto-approve, auto-merge, deploy-to-eden]
+    needs: [lint-pull-request, activate-workflow, security-scan, triage, auto-approve, auto-merge]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
