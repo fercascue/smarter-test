@@ -1,8 +1,10 @@
 # Welcome
-[![Eden build](https://github.com/fercascue/smarter-test/actions/workflows/Eden-build.yml/badge.svg)](https://github.com/fercascue/smarter-test/actions/workflows/Eden-build.yml)
 
-[![Feature Continuous Integration](https://github.com/fercascue/smarter-test/actions/workflows/feature-build.yml/badge.svg)](https://github.com/fercascue/smarter-test/actions/workflows/feature-build.yml)
+[![Feature Build](https://github.com/fercascue/smarter-test/actions/workflows/feature-build.yml/badge.svg)](https://github.com/fercascue/smarter-test/actions/workflows/feature-build.yml)
 
-Update
+[![Build Develop](https://github.com/fercascue/smarter-test/actions/workflows/Eden-build.yml/badge.svg)](https://github.com/fercascue/smarter-test/actions/workflows/Eden-build.yml)
+
+
+[![Deploy Develop](https://github.com/fercascue/smarter-test/actions/workflows/Eden-deploy.yml/badge.svg)](https://github.com/fercascue/smarter-test/actions/workflows/Eden-deploy.yml)
 
 ```
