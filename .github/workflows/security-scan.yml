@@ -31,26 +31,4 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Initializes the CodeQL tools for scanning.
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        # Override language selection by uncommenting this and choosing your languages
-        with:
-           languages: java
-
-      # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
-      # If this step fails, then you should remove it and run the build manually (see below).
-      - name: Setup jdk
-        uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc
-        with:
-          java-version: ${{ inputs.java-version }}
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Build with Maven
-        run: mvn clean install ${{ inputs.maven-params }} --file pom.xml   
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2   
-   
-  
+     

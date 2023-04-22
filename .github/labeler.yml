@@ -1,0 +1,31 @@
+customer-portal-back:
+  - '**/*'
+
+ci/cd:
+  - .github/workflows/*
+
+container-definition:
+ - Dockerfile
+
+layer:
+  - "*layer*"
+
+documentation:
+  - README.md
+  - ./*.md
+
+lambda1:
+  - lambda1/**
+
+lambda2:
+  - lambda2/**
+
+dependency-management:
+ - pom.xml
+
+testing-suite:
+- "TEST*.*"
+
+infrastructure:
+ - .github/*
+ - .github/**/*
