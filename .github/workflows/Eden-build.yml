@@ -75,12 +75,37 @@ jobs:
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           review-message: "Auto approved automated PR"
+  auto-merge:
+    runs-on: ubuntu-latest
+    name: Auto-merge Bot
+    needs: auto-approve
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+      - run: gh pr close --comment "Auto-closing pull request" ${{ github.event.pull_request.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
   
+  deploy-to-eden:
+    needs: [activate-workflow, auto-merge]
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+    strategy:
+      matrix:
+        projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
+    uses: ./.github/workflows/deploy-workflow.yml
+    with:
+      stage: ${{ github.ref_name }}
+      resource: ${{ (matrix.projects) }} 
   
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
     name: Complete Security Scan
-    needs: [lint-pull-request, activate-workflow, security-scan, triage, auto-approve]
+    needs: [lint-pull-request, activate-workflow, security-scan, triage, auto-approve, auto-merge, deploy-to-eden]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
