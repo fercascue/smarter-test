@@ -1,53 +1,40 @@
-name: Feature Continuous Integration
+name: Eden Deploy
+
 on:
-  push:
-    branches:
-      - 'feature*'
-    paths:
-      - 'lambda1/**'
-      - 'lambda2/**'
+  workflow_dispatch:
+
 jobs:
-  activate-workflow: 
-    name: Detect changes
+  activate-workflow:
     runs-on: ubuntu-latest
     # Required permissions
-    permissions:
-      pull-requests: read
     outputs:
       # Expose matched filters as job 'projects' output variable
       projects: ${{ steps.filter.outputs.changes }}
     steps:
      - uses: actions/checkout@v3
-       with:
-        # This may save additional git fetch roundtrip if
-        # merge-base is found within latest 20 commits
-        fetch-depth: 20
      - uses: dorny/paths-filter@v2
        id: filter
        with:
-         base: test-qua
          list-files: json
          filters: |
            lambda1:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
-  build-feature:
-    name: Build feature
+  deploy-to-eden:
     needs: activate-workflow
     if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
     strategy:
       matrix:
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
-    uses: ./.github/workflows/build-workflow.yml
+    uses: ./.github/workflows/deploy-workflow.yml
     with:
       stage: ${{ github.ref_name }}
       resource: ${{ (matrix.projects) }}  
-
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
-    name: Complete CI
-    needs: build-feature
+    name: Complete Eden Deploy
+    needs: deploy-to-eden
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
@@ -56,10 +43,11 @@ jobs:
         # see https://stackoverflow.com/a/67532120/4907315
         if: >-
           ${{
-               contains(needs.*.result, 'failure')
+                contains(needs.*.result, 'failure')
             || contains(needs.*.result, 'cancelled')
             || contains(needs.*.result, 'skipped')
           }}
         run: exit 1
   
  
+
