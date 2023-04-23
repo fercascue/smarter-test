@@ -1,8 +1,7 @@
 name: Maven Package
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,5 +17,6 @@ jobs:
     - uses: google-github-actions/release-please-action@v3
       with:
        release-type: maven
-       package-name: release-please-action
+       package-name: customer-portal-back
+       command: github-release 
    
