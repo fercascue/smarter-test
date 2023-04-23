@@ -17,6 +17,4 @@ jobs:
     - uses: google-github-actions/release-please-action@v3
       with:
        release-type: maven
-       package-name: customer-portal-back
-       monorepo-tags: true
        command: github-release
