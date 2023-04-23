@@ -19,3 +19,4 @@ jobs:
        release-type: maven
        package-name: customer-portal-back
        monorepo-tags: true
+       command: github-release
