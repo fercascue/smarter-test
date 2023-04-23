@@ -1,17 +1,23 @@
 name: Maven Package
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v2
+    - uses: google-github-actions/release-please-action@v3
+      with:
+       release-type: maven
+       package-name: customer-portal-back
+       command: github-release
+       default-branch: main
    
