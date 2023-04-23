@@ -19,5 +19,5 @@ jobs:
        release-type: maven
        package-name: customer-portal-back
        command: github-release
-       default-branch: main
+       default-branch: develop
    
