@@ -32,6 +32,9 @@ jobs:
              - 'lambda1/**'
            lambda2:
              - 'lambda2/**'
+           model:
+              - 'model/**'  
+
   build-feature:
     name: Build feature
     needs: activate-workflow
