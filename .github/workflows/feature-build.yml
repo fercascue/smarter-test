@@ -25,7 +25,6 @@ jobs:
      - uses: dorny/paths-filter@v2
        id: filter
        with:
-         base: test-qua
          list-files: json
          filters: |
            lambda1:
