@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - 'feature*'
-    paths:
-      - 'lambda1/**'
-      - 'lambda2/**'
+   
 jobs:
   activate-workflow: 
     name: Detect changes
