@@ -33,10 +33,10 @@ jobs:
            model:
               - 'model/**'  
 
-  build-feature:
-    name: Build feature
+  build-layer:
+    name: Build layer
     needs: activate-workflow
-    if: ${{ needs.activate-workflow.outputs.projects != '[]' && contains(needs.activate-workflow.outputs.projects, 'lambda1')}}
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' && contains(needs.activate-workflow.outputs.projects, 'model')}}
     strategy:
       matrix:
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
@@ -44,6 +44,19 @@ jobs:
     with:
       stage: ${{ github.ref_name }}
       resource: ${{ (matrix.projects) }}  
+
+  build-feature:
+    name: Build feature
+    needs: [activate-workflow, build-layer]
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+    strategy:
+      matrix:
+        projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
+    uses: ./.github/workflows/build-workflow.yml
+    with:
+      stage: ${{ github.ref_name }}
+      resource: ${{ (matrix.projects) }}  
+  
 
   complete:
     # see https://github.community/t/status-check-for-a-matrix-jobs/127354/7
