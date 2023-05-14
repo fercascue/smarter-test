@@ -18,13 +18,14 @@ jobs:
       projects: ${{ steps.filter.outputs.changes }}
     steps:
      - uses: actions/checkout@v3
-       #with:
+       with:
         # This may save additional git fetch roundtrip if
         # merge-base is found within latest 20 commits
-        #fetch-depth: 20
+        fetch-depth: 20
      - uses: dorny/paths-filter@v2
        id: filter
        with:
+         base: ${{ github.ref_name }}
          list-files: json
          filters: |
            lambda1:
