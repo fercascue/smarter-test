@@ -27,7 +27,11 @@ jobs:
        with:
          base: test-qua
          list-files: json
-         
+         filters: |
+           lambda1:
+             - 'lambda1/**'
+           lambda2:
+             - 'lambda2/**'
   build-feature:
     name: Build feature
     needs: activate-workflow
