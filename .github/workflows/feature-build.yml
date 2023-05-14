@@ -21,7 +21,7 @@ jobs:
        with:
         # This may save additional git fetch roundtrip if
         # merge-base is found within latest 20 commits
-        fetch-depth: 20
+        #fetch-depth: 20
      - uses: dorny/paths-filter@v2
        id: filter
        with:
