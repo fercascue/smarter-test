@@ -35,7 +35,7 @@ jobs:
   build-feature:
     name: Build feature
     needs: activate-workflow
-    if: ${{ needs.activate-workflow.outputs.projects != '[]' }}
+    if: ${{ needs.activate-workflow.outputs.projects != '[]' && contains(needs.activate-workflow.outputs.projects, 'lambda1')}}
     strategy:
       matrix:
         projects: ${{ fromJSON(needs.activate-workflow.outputs.projects) }}
